@@ -1,0 +1,89 @@
+.movie-form-container {
+    padding: 20px;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background-color: #212121; /* Black background */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    color: white;
+}
+
+.movie-form-container h3 {
+    margin-top: 0;
+    color: white;
+    border-bottom: 1px dashed #444;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.movie-form-container form div {
+    margin-bottom: 15px;
+}
+
+.movie-form-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #ccc; /* Light grey */
+}
+
+.movie-form-container input[type="text"],
+.movie-form-container select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #333; /* Darker gray */
+    color: white;
+}
+
+.movie-form-container button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff; /* Blue */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.movie-form-container button[type="submit"]:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.movie-form-container button[type="submit"]:disabled {
+    background-color: #4a5c71;
+    cursor: not-allowed;
+}
+
+.movie-form-container button[type="button"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #6c757d !important; /* Grey */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.success-message {
+    color: #d4edda; /* Light green  */
+    background-color: #155724; /* Dark green */
+    border: 1px solid #1c7430; /* Green
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 4px;
+}
+
+.error-message {
+    color: #f8d7da; /* Light red */
+    background-color: #721c24; /* Dark red */
+    border: 1px solid #a71d2a; /* Red */
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 4px;
+}

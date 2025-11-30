@@ -1,0 +1,35 @@
+.admin-page-container {
+    padding: 0;
+    margin: 0;
+}
+
+.admin-page-header {
+    padding: 20px;
+    text-align: center;
+    color: white;
+    background-color: #111;
+    border-bottom: 2px solid #007bff; /* Blue  */
+    margin-bottom: 20px;
+}
+
+.admin-page-header h2 {
+    margin: 0;
+    font-size: 1.8em;
+    color: #f8f9fa;
+}
+
+.admin-main-content {
+    display: flex;
+    gap: 30px;
+    padding: 0 20px 20px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.admin-form-section {
+    flex: 1;
+}
+
+.admin-list-section {
+    flex: 2;
+}

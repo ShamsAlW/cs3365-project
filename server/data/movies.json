@@ -1,0 +1,16 @@
+[
+  {
+    "id": "m1764469505949",
+    "title": "Harry Potter",
+    "poster_url": "https://www.originalfilmart.com/cdn/shop/files/harry_potter_and_the_sorcerers_stone_2001_original_film_art_5000x.webp?v=1684872812",
+    "rating": "PG",
+    "showtimes": [
+      {
+        "date": "2025-11-30",
+        "times": [
+          "10:00"
+        ]
+      }
+    ]
+  }
+]
