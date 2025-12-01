@@ -3,6 +3,25 @@ import './AdminMovieList.css';
 
 function AdminMovieList({ movies, onMovieChange, onStartEdit }) {
 
+    // Helper function to format date
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+    };
+
+    // Helper function to format time to 12-hour format
+    const formatTime = (timeString) => {
+        const [hours, minutes] = timeString.split(':');
+        const hour = parseInt(hours);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const displayHour = hour % 12 || 12;
+        return `${displayHour}:${minutes} ${ampm}`;
+    };
+
     // Delete Handler
     const handleDelete = async (movieId, movieTitle) => {
         if (!window.confirm(`Are you sure you want to delete "${movieTitle}"?`)) {
@@ -10,17 +29,14 @@ function AdminMovieList({ movies, onMovieChange, onStartEdit }) {
         }
 
         try {
-            // Delete request
             const response = await fetch(`/api/movies/${movieId}`, {
                 method: 'DELETE',
             });
 
             if (response.status === 204) {
-                // 204 No Content means success
                 onMovieChange();
                 console.log(`Successfully deleted movie ID: ${movieId}`);
             } else {
-                // Handle server errors
                 console.error('Failed to delete movie. Server returned status:', response.status);
             }
         } catch (error) {
@@ -51,25 +67,49 @@ function AdminMovieList({ movies, onMovieChange, onStartEdit }) {
                     <div className="movie-details">
                         <h3>{movie.title} ({movie.rating})</h3>
 
-                        <h4>Showtimes:</h4>
-                        {movie.showtimes && movie.showtimes.length > 0 && (
-                            <p>
-                                **Date:** {movie.showtimes[0].date} | **Times:** {movie.showtimes[0].times.join(', ')}
+                        {movie.description && (
+                            <p className="movie-description-preview">
+                                {movie.description.length > 150
+                                    ? `${movie.description.substring(0, 150)}...`
+                                    : movie.description}
                             </p>
                         )}
 
-                        {/* EDIT BUTTON: Calls the handler in App.jsx to load the movie data into the form */}
-                        <button
-                            onClick={() => onStartEdit(movie)}
-                            style={{ marginRight: '10px' }}
-                        >
-                            Edit
-                        </button>
+                        <div className="showtimes-section">
+                            <h4>Showtimes:</h4>
+                            {movie.showtimes && movie.showtimes.length > 0 ? (
+                                <div className="showtimes-list">
+                                    {movie.showtimes.map((showtime, index) => (
+                                        <div key={index} className="showtime-item">
+                                            <span className="showtime-date">
+                                                {formatDate(showtime.date)}:
+                                            </span>
+                                            <span className="showtime-times">
+                                                {showtime.times.map(time => formatTime(time)).join(', ')}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p>No showtimes available</p>
+                            )}
+                        </div>
 
-                        {/* DELETE BUTTON: Calls the local delete handler */}
-                        <button onClick={() => handleDelete(movie.id, movie.title)}>
-                            Delete
-                        </button>
+                        <div className="action-buttons">
+                            <button
+                                className="edit-btn"
+                                onClick={() => onStartEdit(movie)}
+                            >
+                                Edit
+                            </button>
+
+                            <button
+                                className="delete-btn"
+                                onClick={() => handleDelete(movie.id, movie.title)}
+                            >
+                                Delete
+                            </button>
+                        </div>
 
                     </div>
                 </div>

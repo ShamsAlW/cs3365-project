@@ -12,5 +12,41 @@
         ]
       }
     ]
+  },
+  {
+    "id": "m1764623133414",
+    "title": "Star Wars: The Force Awakens",
+    "poster_url": "https://a.ltrbxd.com/resized/sm/upload/t1/n6/d1/k6/g2mqdMU3jaz6uEosF5aqJgbw7e9-0-1000-0-1500-crop.jpg?v=f105fa4be0",
+    "rating": "PG-13",
+    "showtimes": [
+      {
+        "date": "2025-12-01",
+        "times": [
+          "15:00",
+          "16:00"
+        ]
+      },
+      {
+        "date": "2025-12-02",
+        "times": [
+          "17:00"
+        ]
+      }
+    ],
+    "description": ""
+  },
+  {
+    "id": "m1764623188023",
+    "title": "The Matrix",
+    "poster_url": "https://a.ltrbxd.com/resized/film-poster/5/1/5/1/8/51518-the-matrix-0-1000-0-1500-crop.jpg?v=fc7c366afe",
+    "rating": "R",
+    "showtimes": [
+      {
+        "date": "2025-12-01",
+        "times": [
+          "3:00"
+        ]
+      }
+    ]
   }
 ]

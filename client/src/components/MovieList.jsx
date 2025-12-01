@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './MovieList.css';
 
 function MovieList({ movies }) {
+    const navigate = useNavigate();
 
     if (!movies || movies.length === 0) {
         return (
@@ -12,30 +14,30 @@ function MovieList({ movies }) {
         );
     }
 
+    const handleMovieClick = (movieId) => {
+        navigate(`/movie/${movieId}`);
+    };
+
     return (
         <div className="public-movie-list-container">
             <h2>Current Showtimes</h2>
-            {movies.map(movie => (
-                <div key={movie.id} className="public-movie-card">
-
-                    <img
-                        src={movie.poster_url}
-                        alt={`Poster for ${movie.title}`}
-                    />
-
-                    <div className="public-movie-details">
-                        <h3>{movie.title} ({movie.rating})</h3>
-
-                        <h4>Showtimes:</h4>
-                        {movie.showtimes && movie.showtimes.length > 0 && (
-                            <p>
-                                **Date:** {movie.showtimes[0].date} | **Times:** {movie.showtimes[0].times.join(', ')}
-                            </p>
-                        )}
-
+            <div className="movie-grid">
+                {movies.map(movie => (
+                    <div
+                        key={movie.id}
+                        className="public-movie-card"
+                        onClick={() => handleMovieClick(movie.id)}
+                    >
+                        <img
+                            src={movie.poster_url}
+                            alt={`Poster for ${movie.title}`}
+                        />
+                        <div className="public-movie-title">
+                            <h3>{movie.title}</h3>
+                        </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
         </div>
     );
 }

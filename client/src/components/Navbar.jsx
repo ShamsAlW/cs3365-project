@@ -14,7 +14,9 @@ export default function Navbar() {
                         className="navbar-logo"
                     />
                 </Link>
-                <div className="navbar-title">Movie Booking System</div>
+                <Link to={"/"}>
+                    <div className="navbar-title">Movie Booking System</div>
+                </Link>
             </div>
 
             <input
