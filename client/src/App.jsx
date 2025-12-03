@@ -27,6 +27,21 @@ function AdminRoute({ children }) {
     return children;
 }
 
+// Protected route component for authenticated users
+function ProtectedRoute({ children }) {
+    const { user, loading } = useAuth();
+
+    if (loading) {
+        return <div style={{ padding: '40px', textAlign: 'center', color: 'white' }}>Loading...</div>;
+    }
+
+    if (!user) {
+        return <Navigate to="/login" replace />;
+    }
+
+    return children;
+}
+
 function AppRoutes() {
     return (
         <div className="container">
@@ -48,6 +63,16 @@ function AppRoutes() {
                         <AdminRoute>
                             <AdminPage />
                         </AdminRoute>
+                    }
+                />
+
+                {/* Account page - protected */}
+                <Route
+                    path="/account"
+                    element={
+                        <ProtectedRoute>
+                            <AccountPage />
+                        </ProtectedRoute>
                     }
                 />
 

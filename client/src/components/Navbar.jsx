@@ -5,7 +5,7 @@ import "./Navbar.css";
 
 
 export default function Navbar() {
-    const { user, logout, isAuthenticated, isAdmin } = useAuth();
+    const {logout, isAuthenticated, isAdmin } = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -28,13 +28,6 @@ export default function Navbar() {
                 </Link>
             </div>
 
-            <input
-                type="text"
-                placeholder="Search movies..."
-                className="navbar-search"
-            />
-
-
             <div className="navbar-buttons">
                 {/* Home Link */}
                 <Link to="/" className="nav-btn">
@@ -51,9 +44,9 @@ export default function Navbar() {
                             </Link>
                         )}
 
-                        {/* User account info */}
-                        <Link to ="/account" className="nav-btn account-btn">
-                            {user.accountId}
+                        {/* My Account Link */}
+                        <Link to="/account" className="nav-btn account-btn">
+                            My Account
                         </Link>
 
                         {/* Logout button */}

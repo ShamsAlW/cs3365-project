@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import MovieList from '../components/MovieList';
+import SearchBar from '../components/SearchBar';
 import './HomePage.css';
 
 function HomePage() {
     const [movies, setMovies] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
 
     // Function to fetch movies
     const fetchMovies = async () => {
@@ -25,10 +27,21 @@ function HomePage() {
         fetchMovies();
     }, []);
 
+    // Filter movies based on search query
+    const filteredMovies = movies.filter(movie =>
+        movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <div className="home-page-container">
             <div style={{ marginTop: '30px', width: '90%' }}>
-                <MovieList movies={movies} />
+                <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+                {searchQuery && (
+                    <p style={{ color: '#888', marginBottom: '20px', textAlign: 'center' }}>
+                        {filteredMovies.length} movie{filteredMovies.length !== 1 ? 's' : ''} found
+                    </p>
+                )}
+                <MovieList movies={filteredMovies} />
             </div>
 
         </div>
