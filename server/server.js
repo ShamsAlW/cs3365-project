@@ -240,6 +240,117 @@ app.delete('/api/movies/:id', (req, res) => {
     res.status(204).send();
 });
 
+// ------------ Booking API Endpoints ------------
+
+// CREATE BOOKING: Book a movie ticket (POST /api/bookings)
+app.post('/api/bookings', (req, res) => {
+    const { accountId, movieId, date, time, seats } = req.body;
+
+    // Validate input
+    if (!accountId || !movieId || !date || !time || !seats) {
+        return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    if (seats < 1 || seats > 10) {
+        return res.status(400).json({ message: 'Seats must be between 1 and 10' });
+    }
+
+    const users = readUsers();
+    const movies = readMovies();
+
+    // Find user
+    const userIndex = users.findIndex(u => u.accountId === accountId);
+    if (userIndex === -1) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Verify movie exists
+    const movie = movies.find(m => m.id === movieId);
+    if (!movie) {
+        return res.status(404).json({ message: 'Movie not found' });
+    }
+
+    // Generate unique booking ID
+    const bookingId = 'b' + Date.now();
+
+    // Create booking object
+    const newBooking = {
+        id: bookingId,
+        movieId,
+        date,
+        time,
+        seats,
+        bookedAt: new Date().toISOString()
+    };
+
+    // Add booking to user's bookings array
+    if (!users[userIndex].bookings) {
+        users[userIndex].bookings = [];
+    }
+    users[userIndex].bookings.push(newBooking);
+
+    // Save updated users
+    writeUsers(users);
+
+    res.status(201).json({
+        message: 'Booking successful',
+        booking: newBooking
+    });
+});
+
+// GET USER BOOKINGS: Get all bookings for a user with movie details (GET /api/users/:accountId/bookings)
+app.get('/api/users/:accountId/bookings', (req, res) => {
+    const { accountId } = req.params;
+    const users = readUsers();
+    const movies = readMovies();
+
+    const user = users.find(u => u.accountId === accountId);
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Enrich bookings with movie details
+    const enrichedBookings = (user.bookings || []).map(booking => {
+        const movie = movies.find(m => m.id === booking.movieId);
+        return {
+            ...booking,
+            movie: movie || null
+        };
+    });
+
+    res.json(enrichedBookings);
+});
+
+// CANCEL BOOKING: Delete a booking (DELETE /api/bookings/:bookingId)
+app.delete('/api/bookings/:bookingId', (req, res) => {
+    const { bookingId } = req.params;
+    const { accountId } = req.body;
+
+    if (!accountId) {
+        return res.status(400).json({ message: 'Account ID is required' });
+    }
+
+    const users = readUsers();
+    const userIndex = users.findIndex(u => u.accountId === accountId);
+
+    if (userIndex === -1) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+
+    const user = users[userIndex];
+    const initialLength = user.bookings ? user.bookings.length : 0;
+
+    // Remove the booking
+    users[userIndex].bookings = (user.bookings || []).filter(b => b.id !== bookingId);
+
+    if (users[userIndex].bookings.length === initialLength) {
+        return res.status(404).json({ message: 'Booking not found' });
+    }
+
+    writeUsers(users);
+    res.json({ message: 'Booking cancelled successfully' });
+});
+
 // ------------ Server Start ------------
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
