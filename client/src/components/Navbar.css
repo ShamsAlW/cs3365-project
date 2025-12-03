@@ -70,7 +70,23 @@
     background-color: #007bff; /* Blue */
 }
 
+.logout-btn {
+    background-color: #ac0101;
+}
+
+.account-btn {
+    background-color: #007bff;
+}
+
 .login-btn:hover {
     background-color: #004eaa; /* Darker Blue */
     color: white;
+}
+
+.account-btn:hover {
+    background-color: #004eaa; /* Darker Blue */
+}
+
+.logout-btn:hover {
+    background-color: #8e0303;
 }

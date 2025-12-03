@@ -1,0 +1,14 @@
+[
+  {
+    "accountId": "ShamsAl",
+    "password": "Password",
+    "isAdmin": false,
+    "bookings": []
+  },
+  {
+    "accountId": "Administrator",
+    "password": "AdminPassword",
+    "isAdmin": true,
+    "bookings": []
+  }
+]

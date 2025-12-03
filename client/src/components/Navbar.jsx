@@ -1,9 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "./Navbar.css";
 
 
 export default function Navbar() {
+    const { user, logout, isAuthenticated, isAdmin } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
+
     return (
         <nav className="navbar">
             <div className="navbar-brand">
@@ -32,10 +41,32 @@ export default function Navbar() {
                     Home
                 </Link>
 
-                {/* Account Link; Currently (temporary) only leads to admin page */}
-                <Link to="/admin" className="nav-btn login-btn">
-                    Account
-                </Link>
+                {/* Conditional rendering based on auth status */}
+                {isAuthenticated ? (
+                    <>
+                        {/* Show admin link only for admin users */}
+                        {isAdmin && (
+                            <Link to="/admin" className="nav-btn">
+                                Admin
+                            </Link>
+                        )}
+
+                        {/* User account info */}
+                        <Link to ="/account" className="nav-btn account-btn">
+                            {user.accountId}
+                        </Link>
+
+                        {/* Logout button */}
+                        <button onClick={handleLogout} className="nav-btn logout-btn">
+                            Logout
+                        </button>
+                    </>
+                ) : (
+                    /* Login Link when not authenticated */
+                    <Link to="/login" className="nav-btn login-btn">
+                        Login
+                    </Link>
+                )}
             </div>
         </nav>
     );
