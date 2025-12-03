@@ -1,17 +1,30 @@
 [
   {
     "id": "m1764469505949",
-    "title": "Harry Potter",
+    "title": "Harry Potter and the Philosopher’s Stone",
     "poster_url": "https://www.originalfilmart.com/cdn/shop/files/harry_potter_and_the_sorcerers_stone_2001_original_film_art_5000x.webp?v=1684872812",
     "rating": "PG",
     "showtimes": [
       {
-        "date": "2025-11-30",
+        "date": "2025-12-03",
         "times": [
           "10:00"
         ]
+      },
+      {
+        "date": "2025-12-05",
+        "times": [
+          "17:00"
+        ]
+      },
+      {
+        "date": "2025-12-07",
+        "times": [
+          "15:00"
+        ]
       }
-    ]
+    ],
+    "description": "Harry Potter has lived under the stairs at his aunt and uncle’s house his whole life. But on his 11th birthday, he learns he’s a powerful wizard—with a place waiting for him at the Hogwarts School of Witchcraft and Wizardry. As he learns to harness his newfound powers with the help of the school’s kindly headmaster, Harry uncovers the truth about his parents’ deaths—and about the villain who’s to blame."
   },
   {
     "id": "m1764623133414",
@@ -42,9 +55,77 @@
     "rating": "R",
     "showtimes": [
       {
-        "date": "2025-12-01",
+        "date": "2025-12-03",
         "times": [
-          "3:00"
+          "18:00"
+        ]
+      },
+      {
+        "date": "2025-12-04",
+        "times": [
+          "19:00"
+        ]
+      },
+      {
+        "date": "2025-12-06",
+        "times": [
+          "12:00",
+          "20:00"
+        ]
+      }
+    ],
+    "description": "Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth."
+  },
+  {
+    "id": "m1764698765301",
+    "title": "Fight Club",
+    "poster_url": "https://a.ltrbxd.com/resized/film-poster/5/1/5/6/8/51568-fight-club-0-1000-0-1500-crop.jpg?v=768b32dfa4",
+    "rating": "R",
+    "description": "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground “fight clubs” forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.",
+    "showtimes": [
+      {
+        "date": "2025-12-04",
+        "times": [
+          "17:00",
+          "20:00"
+        ]
+      },
+      {
+        "date": "2025-12-06",
+        "times": [
+          "13:00",
+          "16:00",
+          "19:00"
+        ]
+      },
+      {
+        "date": "2025-12-08",
+        "times": [
+          "17:00",
+          "20:00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "m1764790272023",
+    "title": "Midsommar",
+    "poster_url": "https://a.ltrbxd.com/resized/film-poster/4/5/9/5/6/4/459564-midsommar-0-1000-0-1500-crop.jpg?v=ed7b8ded1f",
+    "rating": "R",
+    "description": "\n\nSeveral friends travel to Sweden to study as anthropologists a summer festival that is held every ninety years in the remote hometown of one of them. What begins as a dream vacation in a place where the sun never sets, gradually turns into a dark nightmare as the mysterious inhabitants invite them to participate in their disturbing festive activities.",
+    "showtimes": [
+      {
+        "date": "2025-12-03",
+        "times": [
+          "19:00"
+        ]
+      },
+      {
+        "date": "2025-12-05",
+        "times": [
+          "19:00",
+          "21:00",
+          "23:00"
         ]
       }
     ]
