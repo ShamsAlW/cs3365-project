@@ -3,6 +3,7 @@
     "accountId": "Administrator",
     "password": "AdminPassword",
     "isAdmin": true,
-    "bookings": []
+    "bookings": [],
+    "reviews": []
   }
 ]

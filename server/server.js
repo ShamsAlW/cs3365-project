@@ -63,9 +63,7 @@ const writeUsers = (users) => {
     fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2), 'utf8');
 };
 
-// ------------------------------------------------------------------
-// NEW HELPER: Function to calculate total tickets booked for a movie
-// ------------------------------------------------------------------
+// Helper Function to calculate total tickets booked for a movie
 const calculateTicketsBooked = (movieId, allUsers) => {
     let totalSeats = 0;
     allUsers.forEach(user => {
@@ -244,8 +242,6 @@ app.put('/api/movies/:id', (req, res) => {
         return res.status(404).json({ message: 'Movie not found' });
     }
 
-    // Preserve existing movie data (including ticketsBooked if it existed, though it's now dynamically calculated)
-    // The dynamic calculation in GET /api/movies makes the ticketsBooked field redundant here, but we ensure the update works fine.
     movies[movieIndex] = { ...movies[movieIndex], ...updatedDetails, id: movieId };
     writeMovies(movies);
 
@@ -268,7 +264,123 @@ app.delete('/api/movies/:id', (req, res) => {
     res.status(204).send();
 });
 
-// ------------ Booking API Endpoints (UNCHANGED) ------------
+// ------------ Review API Endpoints (REWRITTEN) ------------
+
+// POST REVIEW: Submit a review for a movie (POST /api/reviews)
+// Expects { accountId, movieId, text }
+app.post('/api/reviews', (req, res) => {
+    const { accountId, movieId, text } = req.body;
+
+    // Validate input
+    if (!accountId || !movieId || !text || String(text).trim() === '') {
+        return res.status(400).json({ message: 'Account ID, Movie ID, and review text are required' });
+    }
+
+    const users = readUsers();
+
+    // Find the user to add the review to their data
+    const userIndex = users.findIndex(u => u.accountId === accountId);
+    if (userIndex === -1) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Generate unique review ID (if creating)
+    const reviewId = 'r' + Date.now();
+
+    // Normalize review object shape that frontend expects
+    const newReview = {
+        id: reviewId,
+        movieId,
+        text: String(text),
+        timestamp: new Date().toISOString(),
+        accountId // used internally to identify user; not required by frontend display
+    };
+
+    // Ensure reviews array exists on the user
+    if (!users[userIndex].reviews) {
+        users[userIndex].reviews = [];
+    }
+
+    // Check if user has already reviewed this movie: update if found, add if not
+    const existingReviewIndex = users[userIndex].reviews.findIndex(r => r.movieId === movieId);
+
+    if (existingReviewIndex !== -1) {
+        // Preserve original id and update text/timestamp
+        const existingId = users[userIndex].reviews[existingReviewIndex].id || users[userIndex].reviews[existingReviewIndex].reviewId || ('r' + Date.now());
+        users[userIndex].reviews[existingReviewIndex] = {
+            ...users[userIndex].reviews[existingReviewIndex],
+            id: existingId,
+            movieId,
+            text: newReview.text,
+            timestamp: newReview.timestamp,
+            accountId
+        };
+
+        // Persist
+        writeUsers(users);
+
+        // Respond with the updated review object in the shape frontend wants
+        const responseReview = {
+            id: users[userIndex].reviews[existingReviewIndex].id,
+            movieId,
+            text: users[userIndex].reviews[existingReviewIndex].text,
+            timestamp: users[userIndex].reviews[existingReviewIndex].timestamp,
+            user: { username: users[userIndex].accountId }
+        };
+
+        return res.status(200).json(responseReview);
+    } else {
+        // Add new review
+        users[userIndex].reviews.push(newReview);
+        writeUsers(users);
+
+        // Shape the response for the frontend
+        const responseReview = {
+            id: newReview.id,
+            movieId: newReview.movieId,
+            text: newReview.text,
+            timestamp: newReview.timestamp,
+            user: { username: users[userIndex].accountId }
+        };
+
+        return res.status(201).json(responseReview);
+    }
+});
+
+// GET REVIEWS: Get all reviews for a given movie (GET /api/reviews?movieId=...)
+app.get('/api/reviews', (req, res) => {
+    const { movieId } = req.query;
+
+    if (!movieId) {
+        return res.status(400).json({ message: 'movieId query parameter is required' });
+    }
+
+    const users = readUsers();
+
+    // Collect all reviews for this movie from each user
+    const allReviews = [];
+
+    users.forEach(user => {
+        (user.reviews || []).forEach(r => {
+            if (r.movieId === movieId) {
+                allReviews.push({
+                    id: r.id || ('r' + Date.now()),
+                    movieId: r.movieId,
+                    text: r.text || r.reviewText || '',
+                    timestamp: r.timestamp || r.submittedAt || new Date().toISOString(),
+                    user: { username: user.accountId }
+                });
+            }
+        });
+    });
+
+    // Sort newest-first (optional, helps show latest first)
+    allReviews.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+    res.json(allReviews);
+});
+
+// ------------ Booking API Endpoints ------------
 
 // CREATE BOOKING: Book a movie ticket (POST /api/bookings)
 app.post('/api/bookings', (req, res) => {
@@ -319,8 +431,6 @@ app.post('/api/bookings', (req, res) => {
 
     // Save updated users
     writeUsers(users);
-
-    // IMPORTANT: The ticketsBooked count is now dynamic, so we don't need to update movies.json here.
 
     res.status(201).json({
         message: 'Booking successful',
@@ -378,7 +488,6 @@ app.delete('/api/bookings/:bookingId', (req, res) => {
     }
 
     writeUsers(users);
-    // IMPORTANT: The ticketsBooked count is dynamic, so we don't need to update movies.json here.
 
     res.json({ message: 'Booking cancelled successfully' });
 });
