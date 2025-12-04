@@ -275,7 +275,7 @@ function MovieDetailPage() {
                                 {formatDate(movie.release_date || 'N/A')}
                             </p>
                             <p className="release-message">
-                                This movie is **Coming Soon!** Showtimes and ticket booking will be available closer to the release date.
+                                This movie is coming soon!
                             </p>
                         </div>
                     )}
@@ -307,7 +307,7 @@ function MovieDetailPage() {
                                     </select>
                                 </div>
 
-                                {/* Time Selection (omitted for brevity) */}
+                                {/* Time Selection */}
                                 <div className="form-group">
                                     <label htmlFor="time-select">Select Time:</label>
                                     <div className="time-buttons">
@@ -323,7 +323,7 @@ function MovieDetailPage() {
                                     </div>
                                 </div>
 
-                                {/* Seats Selection (omitted for brevity) */}
+                                {/* Seats Selection */}
                                 <div className="form-group">
                                     <label htmlFor="seats-select">Number of Seats:</label>
                                     <div className="seats-selector">
@@ -362,62 +362,63 @@ function MovieDetailPage() {
                         </div>
                     )}
 
-                    {/* NEW: Review Section */}
-                    <div className="review-section">
-                        <h3>User Reviews</h3>
+                    {/* Only show reviews if NOT upcoming */}
+                    {!isUpcoming && (
+                        <div className="review-section">
+                            <h3>User Reviews</h3>
 
-                        {/* Review Submission Form (Conditional) */}
-                        {isAuthenticated ? (
-                            <form onSubmit={handleReviewSubmit} className="review-form">
-                                <textarea
-                                    value={newReviewText}
-                                    onChange={(e) => setNewReviewText(e.target.value)}
-                                    placeholder="Write your review here (max 500 characters)..."
-                                    rows="4"
-                                    maxLength="500"
-                                    disabled={reviewLoading}
-                                    required
-                                />
-                                <button type="submit" disabled={reviewLoading}>
-                                    {reviewLoading ? 'Submitting...' : 'Submit Review'}
-                                </button>
-                                {reviewMessage && (
-                                    <p className={reviewMessage.includes('successfully') ? 'success-message' : 'error-message'}>
-                                        {reviewMessage}
-                                    </p>
-                                )}
-                            </form>
-                        ) : (
-                            <p className="login-prompt">
-                                <button onClick={() => navigate('/login')} className="login-button-review">
-                                    Login
-                                </button>
-                                to write a review.
-                            </p>
-                        )}
-
-                        {/* Display Existing Reviews */}
-                        {reviews.length > 0 ? (
-                            <div className="reviews-list">
-                                {reviews.map((review, index) => (
-                                    <div key={review.id || index} className="review-card">
-                                        <p className="review-header">
-                                            <span className="reviewer-name">
-                                                {review.user?.username || 'Anonymous User'}
-                                            </span>
-                                            <span className="review-date">
-                                                {review.timestamp ? formatDate(review.timestamp) : 'N/A'}
-                                            </span>
+                            {/* Review Submission Form (Conditional) */}
+                            {isAuthenticated ? (
+                                <form onSubmit={handleReviewSubmit} className="review-form">
+                <textarea
+                    value={newReviewText}
+                    onChange={(e) => setNewReviewText(e.target.value)}
+                    placeholder="Write your review here (max 500 characters)..."
+                    rows="4"
+                    maxLength="500"
+                    disabled={reviewLoading}
+                    required
+                />
+                                    <button type="submit" disabled={reviewLoading}>
+                                        {reviewLoading ? 'Submitting...' : 'Submit Review'}
+                                    </button>
+                                    {reviewMessage && (
+                                        <p className={reviewMessage.includes('successfully') ? 'success-message' : 'error-message'}>
+                                            {reviewMessage}
                                         </p>
-                                        <p className="review-text">{review.text}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="no-reviews">Be the first to leave a review!</p>
-                        )}
-                    </div>
-                    {/* END NEW: Review Section */}
+                                    )}
+                                </form>
+                            ) : (
+                                <p className="login-prompt">
+                                    <button onClick={() => navigate('/login')} className="login-button-review">
+                                        Login
+                                    </button>
+                                    to write a review.
+                                </p>
+                            )}
+
+                            {/* Display Existing Reviews */}
+                            {reviews.length > 0 ? (
+                                <div className="reviews-list">
+                                    {reviews.map((review, index) => (
+                                        <div key={review.id || index} className="review-card">
+                                            <p className="review-header">
+                            <span className="reviewer-name">
+                                {review.user?.username || 'Anonymous User'}
+                            </span>
+                                                <span className="review-date">
+                                {review.timestamp ? formatDate(review.timestamp) : 'N/A'}
+                            </span>
+                                            </p>
+                                            <p className="review-text">{review.text}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="no-reviews">Be the first to leave a review!</p>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
