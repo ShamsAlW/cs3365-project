@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AdminPage from './pages/AdminPage';
 import MovieDetailPage from './pages/MovieDetailPage';
+import AccountPage from './pages/AccountPage';
 
 // Protected route component for admin
 function AdminRoute({ children }) {

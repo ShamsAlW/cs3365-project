@@ -7,10 +7,67 @@
 
 .public-movie-list-container h2 {
     color: #007bff;
-    border-bottom: 2px solid #333;
+    /* The main border-bottom is removed from h2 to be placed under the tabs */
     padding-bottom: 10px;
     margin-bottom: 20px;
 }
+
+/* NEW: Tab Navigation Styles (Large Header Tabs) */
+.tab-navigation {
+    display: flex;
+    /* This margin provides space between the tabs and the movie grid */
+    margin-bottom: 30px;
+    border-bottom: 2px solid #333;
+}
+
+.tab-btn {
+    background-color: #2c2c2c;
+    color: #90caf9;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-bottom 0.2s;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 4px 4px 0 0;
+    flex-grow: 1; /* Ensures the buttons share the available width equally */
+    text-align: center;
+}
+
+.large-tab {
+    padding: 20px 0; /* Increase padding for height */
+    font-size: 24px; /* Make text larger */
+    text-transform: uppercase;
+}
+
+.tab-btn:hover {
+    background-color: #3a3a3a;
+}
+
+.tab-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-bottom: 5px solid #007bff; /* Thicker active border */
+    position: relative;
+    bottom: -2px; /* Pull it slightly over the container border */
+    z-index: 10;
+}
+
+/* NEW: Style for empty list message */
+.no-movies-message-public {
+    padding: 20px;
+    text-align: center;
+    color: #ccc;
+    background-color: #2c2c2c;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.no-movies-message-public p {
+    margin: 0;
+}
+/* END NEW STYLES */
+
 
 .movie-grid {
     display: grid;

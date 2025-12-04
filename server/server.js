@@ -63,7 +63,23 @@ const writeUsers = (users) => {
     fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2), 'utf8');
 };
 
-// ------------ Authentication Endpoints ------------
+// ------------------------------------------------------------------
+// NEW HELPER: Function to calculate total tickets booked for a movie
+// ------------------------------------------------------------------
+const calculateTicketsBooked = (movieId, allUsers) => {
+    let totalSeats = 0;
+    allUsers.forEach(user => {
+        (user.bookings || []).forEach(booking => {
+            if (booking.movieId === movieId) {
+                totalSeats += booking.seats;
+            }
+        });
+    });
+    return totalSeats;
+};
+
+
+// ------------ Authentication Endpoints (UNCHANGED) ------------
 
 // REGISTER: Create a new user account (POST /api/auth/register)
 app.post('/api/auth/register', async (req, res) => {
@@ -188,7 +204,15 @@ app.get('/api/users/:accountId', (req, res) => {
 // READ: Get all movies (GET /api/movies)
 app.get('/api/movies', (req, res) => {
     const movies = readMovies();
-    res.json(movies);
+    const users = readUsers(); // Load users to calculate total bookings
+
+    // MAP: Inject the ticketsBooked count into each movie object
+    const moviesWithBookings = movies.map(movie => ({
+        ...movie,
+        ticketsBooked: calculateTicketsBooked(movie.id, users)
+    }));
+
+    res.json(moviesWithBookings);
 });
 
 // CREATE: Add a new movie (POST /api/movies)
@@ -198,7 +222,9 @@ app.post('/api/movies', (req, res) => {
 
     // Generate ID
     const newId = 'm' + Date.now();
-    const newMovie = { id: newId, ...newMovieDetails };
+
+    // Ensure new movies start with 0 bookings
+    const newMovie = { id: newId, ticketsBooked: 0, ...newMovieDetails };
 
     movies.push(newMovie);
     writeMovies(movies);
@@ -218,6 +244,8 @@ app.put('/api/movies/:id', (req, res) => {
         return res.status(404).json({ message: 'Movie not found' });
     }
 
+    // Preserve existing movie data (including ticketsBooked if it existed, though it's now dynamically calculated)
+    // The dynamic calculation in GET /api/movies makes the ticketsBooked field redundant here, but we ensure the update works fine.
     movies[movieIndex] = { ...movies[movieIndex], ...updatedDetails, id: movieId };
     writeMovies(movies);
 
@@ -240,7 +268,7 @@ app.delete('/api/movies/:id', (req, res) => {
     res.status(204).send();
 });
 
-// ------------ Booking API Endpoints ------------
+// ------------ Booking API Endpoints (UNCHANGED) ------------
 
 // CREATE BOOKING: Book a movie ticket (POST /api/bookings)
 app.post('/api/bookings', (req, res) => {
@@ -291,6 +319,8 @@ app.post('/api/bookings', (req, res) => {
 
     // Save updated users
     writeUsers(users);
+
+    // IMPORTANT: The ticketsBooked count is now dynamic, so we don't need to update movies.json here.
 
     res.status(201).json({
         message: 'Booking successful',
@@ -348,6 +378,8 @@ app.delete('/api/bookings/:bookingId', (req, res) => {
     }
 
     writeUsers(users);
+    // IMPORTANT: The ticketsBooked count is dynamic, so we don't need to update movies.json here.
+
     res.json({ message: 'Booking cancelled successfully' });
 });
 
