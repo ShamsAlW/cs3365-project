@@ -18,6 +18,25 @@ function MovieDetailPage() {
     const [bookingMessage, setBookingMessage] = useState('');
     const [showConfirmation, setShowConfirmation] = useState(false);
 
+    // Review State
+    const [reviews, setReviews] = useState([]);
+    const [newReviewText, setNewReviewText] = useState('');
+    const [reviewLoading, setReviewLoading] = useState(false);
+    const [reviewMessage, setReviewMessage] = useState('');
+
+    const fetchReviews = async (movieId) => {
+        try {
+            // Fetch reviews (same endpoint as before)
+            const reviewsRes = await fetch(`/api/reviews?movieId=${movieId}`);
+            if (reviewsRes.ok) {
+                const reviewData = await reviewsRes.json();
+                setReviews(reviewData);
+            }
+        } catch (err) {
+            console.error("Error fetching reviews:", err);
+        }
+    }
+
     useEffect(() => {
         const fetchMovieDetail = async () => {
             try {
@@ -30,7 +49,6 @@ function MovieDetailPage() {
                 const foundMovie = data.find(m => m.id === id);
                 setMovie(foundMovie);
 
-                // Set first available showtime as default
                 if (foundMovie?.showtimes?.length > 0) {
                     setSelectedDate(foundMovie.showtimes[0].date);
                     if (foundMovie.showtimes[0].times?.length > 0) {
@@ -39,26 +57,30 @@ function MovieDetailPage() {
                 }
             } catch (err) {
                 console.error("Error fetching movie details:", err);
-            } finally {
-                setLoading(false);
             }
+
+            // Call review fetch function
+            await fetchReviews(id);
+
+            setLoading(false);
         };
 
         fetchMovieDetail();
     }, [id]);
 
-    // Helper function to format date
+    // Helper functions
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+        const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+        const adjustedDate = new Date(date.getTime() + userTimezoneOffset);
+
+        return adjustedDate.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
         });
     };
 
-    // Helper function to format time to 12-hour format
     const formatTime = (timeString) => {
         const [hours, minutes] = timeString.split(':');
         const hour = parseInt(hours);
@@ -67,13 +89,12 @@ function MovieDetailPage() {
         return `${displayHour}:${minutes} ${ampm}`;
     };
 
-    // Get available times for selected date
     const getTimesForDate = (date) => {
         const showtime = movie?.showtimes?.find(s => s.date === date);
         return showtime?.times || [];
     };
 
-    // Handle booking
+    // Handle booking (omitted for brevity)
     const handleBooking = async () => {
         if (!isAuthenticated) {
             navigate('/login');
@@ -110,7 +131,6 @@ function MovieDetailPage() {
                 return;
             }
 
-            // Update user context with new booking
             const updatedUser = {
                 ...user,
                 bookings: [...(user.bookings || []), data.booking]
@@ -126,6 +146,56 @@ function MovieDetailPage() {
             setBookingLoading(false);
         }
     };
+
+    // Updated handleReviewSubmit in MovieDetailPage.jsx
+    const handleReviewSubmit = async (e) => {
+        e.preventDefault();
+        if (!isAuthenticated) {
+            setReviewMessage('You must be logged in to submit a review.');
+            return;
+        }
+        if (newReviewText.trim() === '') {
+            setReviewMessage('Review cannot be empty.');
+            return;
+        }
+
+        setReviewLoading(true);
+        setReviewMessage('');
+
+        try {
+            const res = await fetch('/api/reviews', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    accountId: user.accountId,
+                    movieId: movie.id,
+                    text: newReviewText,
+                })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                setReviewMessage(data.message || 'Failed to submit review.');
+                return;
+            }
+
+            // 1. Clear the input box (Keep this)
+            setNewReviewText('');
+
+            // 2. Add the new review to the beginning of the reviews list (Keep this for live update)
+            setReviews(prevReviews => [data, ...prevReviews]);
+
+        } catch (err) {
+            setReviewMessage('Network error submitting review.');
+            console.error(err);
+        } finally {
+            setReviewLoading(false);
+        }
+    };
+
 
     if (loading) {
         return (
@@ -144,6 +214,8 @@ function MovieDetailPage() {
         );
     }
 
+    const isUpcoming = movie.status === 'upcoming';
+
     return (
         <div className="movie-detail-container">
             <button className="back-button" onClick={() => navigate('/')}>
@@ -152,6 +224,7 @@ function MovieDetailPage() {
 
             {showConfirmation && (
                 <div className="booking-confirmation">
+                    {/* Confirmation Modal JSX (omitted for brevity) */}
                     <div className="confirmation-content">
                         <h2>🎉 Booking Confirmed!</h2>
                         <p>Your tickets have been booked successfully.</p>
@@ -194,13 +267,26 @@ function MovieDetailPage() {
                         </div>
                     )}
 
-                    {/* Booking Section */}
-                    {movie.showtimes && movie.showtimes.length > 0 && (
+                    {/* Content for Upcoming Movies (Release Date) */}
+                    {isUpcoming && (
+                        <div className="upcoming-info-section">
+                            <h3>Anticipated Release Date</h3>
+                            <p className="release-date-display">
+                                {formatDate(movie.release_date || 'N/A')}
+                            </p>
+                            <p className="release-message">
+                                This movie is **Coming Soon!** Showtimes and ticket booking will be available closer to the release date.
+                            </p>
+                        </div>
+                    )}
+
+                    {/* Booking Section - Only for Streaming */}
+                    {!isUpcoming && movie.showtimes && movie.showtimes.length > 0 && (
                         <div className="booking-section">
                             <h3>Book Tickets</h3>
 
                             <div className="booking-form">
-                                {/* Date Selection */}
+                                {/* Date Selection (omitted for brevity) */}
                                 <div className="form-group">
                                     <label htmlFor="date-select">Select Date:</label>
                                     <select
@@ -221,7 +307,7 @@ function MovieDetailPage() {
                                     </select>
                                 </div>
 
-                                {/* Time Selection */}
+                                {/* Time Selection (omitted for brevity) */}
                                 <div className="form-group">
                                     <label htmlFor="time-select">Select Time:</label>
                                     <div className="time-buttons">
@@ -237,7 +323,7 @@ function MovieDetailPage() {
                                     </div>
                                 </div>
 
-                                {/* Seats Selection */}
+                                {/* Seats Selection (omitted for brevity) */}
                                 <div className="form-group">
                                     <label htmlFor="seats-select">Number of Seats:</label>
                                     <div className="seats-selector">
@@ -276,30 +362,62 @@ function MovieDetailPage() {
                         </div>
                     )}
 
-                    {/* Showtimes Display */}
-                    <div className="movie-showtimes">
-                        <h3>All Showtimes</h3>
-                        {movie.showtimes && movie.showtimes.length > 0 ? (
-                            <div className="showtimes-list">
-                                {movie.showtimes.map((showtime, index) => (
-                                    <div key={index} className="showtime-card">
-                                        <div className="showtime-date-header">
-                                            {formatDate(showtime.date)}
-                                        </div>
-                                        <div className="showtime-times-grid">
-                                            {showtime.times.map((time, timeIndex) => (
-                                                <div key={timeIndex} className="time-badge">
-                                                    {formatTime(time)}
-                                                </div>
-                                            ))}
-                                        </div>
+                    {/* NEW: Review Section */}
+                    <div className="review-section">
+                        <h3>User Reviews</h3>
+
+                        {/* Review Submission Form (Conditional) */}
+                        {isAuthenticated ? (
+                            <form onSubmit={handleReviewSubmit} className="review-form">
+                                <textarea
+                                    value={newReviewText}
+                                    onChange={(e) => setNewReviewText(e.target.value)}
+                                    placeholder="Write your review here (max 500 characters)..."
+                                    rows="4"
+                                    maxLength="500"
+                                    disabled={reviewLoading}
+                                    required
+                                />
+                                <button type="submit" disabled={reviewLoading}>
+                                    {reviewLoading ? 'Submitting...' : 'Submit Review'}
+                                </button>
+                                {reviewMessage && (
+                                    <p className={reviewMessage.includes('successfully') ? 'success-message' : 'error-message'}>
+                                        {reviewMessage}
+                                    </p>
+                                )}
+                            </form>
+                        ) : (
+                            <p className="login-prompt">
+                                <button onClick={() => navigate('/login')} className="login-button-review">
+                                    Login
+                                </button>
+                                to write a review.
+                            </p>
+                        )}
+
+                        {/* Display Existing Reviews */}
+                        {reviews.length > 0 ? (
+                            <div className="reviews-list">
+                                {reviews.map((review, index) => (
+                                    <div key={review.id || index} className="review-card">
+                                        <p className="review-header">
+                                            <span className="reviewer-name">
+                                                {review.user?.username || 'Anonymous User'}
+                                            </span>
+                                            <span className="review-date">
+                                                {review.timestamp ? formatDate(review.timestamp) : 'N/A'}
+                                            </span>
+                                        </p>
+                                        <p className="review-text">{review.text}</p>
                                     </div>
                                 ))}
                             </div>
                         ) : (
-                            <p>No showtimes available.</p>
+                            <p className="no-reviews">Be the first to leave a review!</p>
                         )}
                     </div>
+                    {/* END NEW: Review Section */}
                 </div>
             </div>
         </div>

@@ -8,6 +8,9 @@ function MovieForm({ onMovieChange, movieToEdit, setMovieToEdit }) {
         poster_url: '',
         rating: 'PG',
         description: '',
+        // --- NEW: Add status and release_date to the initial state ---
+        status: 'streaming', // Default to 'streaming'
+        release_date: '',
     };
 
     const [formData, setFormData] = useState(initialFormState);
@@ -18,30 +21,39 @@ function MovieForm({ onMovieChange, movieToEdit, setMovieToEdit }) {
     // Handle Edit Mode
     useEffect(() => {
         if (movieToEdit) {
+            // 1. Get the status first, defaulting to 'streaming'
+            const movieStatus = movieToEdit.status || 'streaming';
+
             setFormData({
                 title: movieToEdit.title,
                 poster_url: movieToEdit.poster_url,
                 rating: movieToEdit.rating,
                 description: movieToEdit.description || '',
+                // Ensure status and release_date are loaded
+                status: movieStatus,
+                release_date: movieToEdit.release_date || '',
             });
 
-            // Load existing showtimes
-            if (movieToEdit.showtimes && movieToEdit.showtimes.length > 0) {
+            // 2. Load existing showtimes ONLY if the movie's status is 'streaming'
+            if (movieStatus === 'streaming' && movieToEdit.showtimes && movieToEdit.showtimes.length > 0) {
                 setShowtimes(movieToEdit.showtimes.map(st => ({
                     date: st.date,
+                    // Ensure each date has at least one empty time slot if times array is empty
                     times: st.times.length > 0 ? st.times : ['']
                 })));
             } else {
+                // If it's an upcoming movie or has no showtimes, reset to one blank entry
                 setShowtimes([{ date: '', times: [''] }]);
             }
 
             setMessage(`Editing: ${movieToEdit.title}`);
         } else {
+            // Reset state when not editing
             setFormData(initialFormState);
             setShowtimes([{ date: '', times: [''] }]);
             setMessage('');
         }
-    }, [movieToEdit]);
+    }, [movieToEdit]); // Dependency array remains correct
 
     // Input Change Handler
     const handleChange = (e) => {
@@ -52,12 +64,11 @@ function MovieForm({ onMovieChange, movieToEdit, setMovieToEdit }) {
         }));
     };
 
-    // Add new showtime date
+    // --- Showtimes handlers (remain the same) ---
     const addShowtimeDate = () => {
         setShowtimes([...showtimes, { date: '', times: [''] }]);
     };
 
-    // Remove showtime date
     const removeShowtimeDate = (index) => {
         if (showtimes.length > 1) {
             const newShowtimes = showtimes.filter((_, i) => i !== index);
@@ -65,21 +76,18 @@ function MovieForm({ onMovieChange, movieToEdit, setMovieToEdit }) {
         }
     };
 
-    // Update date for a specific showtime
     const updateShowtimeDate = (index, date) => {
         const newShowtimes = [...showtimes];
         newShowtimes[index].date = date;
         setShowtimes(newShowtimes);
     };
 
-    // Add time slot to a specific showtime
     const addTimeSlot = (showtimeIndex) => {
         const newShowtimes = [...showtimes];
         newShowtimes[showtimeIndex].times.push('');
         setShowtimes(newShowtimes);
     };
 
-    // Remove time slot from a specific showtime
     const removeTimeSlot = (showtimeIndex, timeIndex) => {
         const newShowtimes = [...showtimes];
         if (newShowtimes[showtimeIndex].times.length > 1) {
@@ -88,42 +96,55 @@ function MovieForm({ onMovieChange, movieToEdit, setMovieToEdit }) {
         }
     };
 
-    // Update specific time slot
     const updateTimeSlot = (showtimeIndex, timeIndex, value) => {
         const newShowtimes = [...showtimes];
         newShowtimes[showtimeIndex].times[timeIndex] = value;
         setShowtimes(newShowtimes);
     };
+    // --- End Showtimes handlers ---
 
     // Submit Handler
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
 
-        // Validate showtimes
-        const validShowtimes = showtimes.filter(st =>
-            st.date && st.times.some(t => t.trim() !== '')
-        ).map(st => ({
-            date: st.date,
-            times: st.times.filter(t => t.trim() !== '')
-        }));
-
-        if (validShowtimes.length === 0) {
-            setMessage('Error: Please add at least one showtime with a date and time.');
-            setIsSubmitting(false);
-            return;
-        }
-
         const method = movieToEdit ? 'PUT' : 'POST';
         const url = movieToEdit ? `/api/movies/${movieToEdit.id}` : '/api/movies';
 
-        const movieToSend = {
+        // --- NEW: Conditional validation and data structure for API call ---
+        let movieToSend = {
             title: formData.title,
             poster_url: formData.poster_url,
             rating: formData.rating,
             description: formData.description,
-            showtimes: validShowtimes,
+            status: formData.status,
+            // Initialize fields to null/empty so they aren't sent if they shouldn't be
+            showtimes: [],
+            release_date: null,
         };
+
+        if (formData.status === 'streaming') {
+            const validShowtimes = showtimes.filter(st =>
+                st.date && st.times.some(t => t.trim() !== '')
+            ).map(st => ({
+                date: st.date,
+                times: st.times.filter(t => t.trim() !== '')
+            }));
+
+            if (validShowtimes.length === 0) {
+                setMessage('Error: Please add at least one showtime with a date and time for a streaming movie.');
+                setIsSubmitting(false);
+                return;
+            }
+            movieToSend.showtimes = validShowtimes;
+        } else if (formData.status === 'upcoming') {
+            if (!formData.release_date) {
+                setMessage('Error: Please enter a release date for an upcoming movie.');
+                setIsSubmitting(false);
+                return;
+            }
+            movieToSend.release_date = formData.release_date;
+        }
 
         try {
             const response = await fetch(url, {
@@ -142,8 +163,14 @@ function MovieForm({ onMovieChange, movieToEdit, setMovieToEdit }) {
 
                 setMessage(successMsg);
                 onMovieChange();
+                setFormData(initialFormState);
+                setShowtimes([{ date: '', times: [''] }]);
+                if (movieToEdit) {
+                    setMovieToEdit(null);
+                }
             } else {
-                setMessage(`Error: Failed to ${method === 'POST' ? 'add' : 'update'} movie.`);
+                const errorData = await response.json();
+                setMessage(`Error: Failed to ${method === 'POST' ? 'add' : 'update'} movie. ${errorData.message || ''}`);
             }
         } catch (error) {
             setMessage(`Network error: ${error.message}`);
@@ -173,6 +200,17 @@ function MovieForm({ onMovieChange, movieToEdit, setMovieToEdit }) {
                     <label>Poster URL:</label>
                     <input type="text" name="poster_url" value={formData.poster_url} onChange={handleChange} required />
                 </div>
+
+                {/* --- NEW: Status Dropdown --- */}
+                <div>
+                    <label>Status:</label>
+                    <select name="status" value={formData.status} onChange={handleChange} required>
+                        <option value="streaming">Streaming</option>
+                        <option value="upcoming">Upcoming</option>
+                    </select>
+                </div>
+                {/* ----------------------------- */}
+
                 <div>
                     <label>Rating:</label>
                     <select name="rating" value={formData.rating} onChange={handleChange}>
@@ -192,66 +230,83 @@ function MovieForm({ onMovieChange, movieToEdit, setMovieToEdit }) {
                     />
                 </div>
 
-                <div className="showtimes-section">
-                    <label>Showtimes:</label>
-                    {showtimes.map((showtime, showtimeIndex) => (
-                        <div key={showtimeIndex} className="showtime-group">
-                            <div className="showtime-header">
-                                <input
-                                    type="date"
-                                    value={showtime.date}
-                                    onChange={(e) => updateShowtimeDate(showtimeIndex, e.target.value)}
-                                    required
-                                />
-                                {showtimes.length > 1 && (
+                {/* --- NEW: Conditional Rendering for Streaming/Upcoming fields --- */}
+                {formData.status === 'streaming' && (
+                    <div className="showtimes-section">
+                        <label>Showtimes:</label>
+                        {showtimes.map((showtime, showtimeIndex) => (
+                            <div key={showtimeIndex} className="showtime-group">
+                                <div className="showtime-header">
+                                    <input
+                                        type="date"
+                                        value={showtime.date}
+                                        onChange={(e) => updateShowtimeDate(showtimeIndex, e.target.value)}
+                                        required
+                                    />
+                                    {showtimes.length > 1 && (
+                                        <button
+                                            type="button"
+                                            className="remove-date-btn"
+                                            onClick={() => removeShowtimeDate(showtimeIndex)}
+                                        >
+                                            Remove Date
+                                        </button>
+                                    )}
+                                </div>
+
+                                <div className="times-list">
+                                    {showtime.times.map((time, timeIndex) => (
+                                        <div key={timeIndex} className="time-input-group">
+                                            <input
+                                                type="time"
+                                                value={time}
+                                                onChange={(e) => updateTimeSlot(showtimeIndex, timeIndex, e.target.value)}
+                                                required
+                                            />
+                                            {showtime.times.length > 1 && (
+                                                <button
+                                                    type="button"
+                                                    className="remove-time-btn"
+                                                    onClick={() => removeTimeSlot(showtimeIndex, timeIndex)}
+                                                >
+                                                    ✕
+                                                </button>
+                                            )}
+                                        </div>
+                                    ))}
                                     <button
                                         type="button"
-                                        className="remove-date-btn"
-                                        onClick={() => removeShowtimeDate(showtimeIndex)}
+                                        className="add-time-btn"
+                                        onClick={() => addTimeSlot(showtimeIndex)}
                                     >
-                                        Remove Date
+                                        + Add Time
                                     </button>
-                                )}
+                                </div>
                             </div>
+                        ))}
+                        <button
+                            type="button"
+                            className="add-date-btn"
+                            onClick={addShowtimeDate}
+                        >
+                            + Add Another Date
+                        </button>
+                    </div>
+                )}
 
-                            <div className="times-list">
-                                {showtime.times.map((time, timeIndex) => (
-                                    <div key={timeIndex} className="time-input-group">
-                                        <input
-                                            type="time"
-                                            value={time}
-                                            onChange={(e) => updateTimeSlot(showtimeIndex, timeIndex, e.target.value)}
-                                            required
-                                        />
-                                        {showtime.times.length > 1 && (
-                                            <button
-                                                type="button"
-                                                className="remove-time-btn"
-                                                onClick={() => removeTimeSlot(showtimeIndex, timeIndex)}
-                                            >
-                                                ✕
-                                            </button>
-                                        )}
-                                    </div>
-                                ))}
-                                <button
-                                    type="button"
-                                    className="add-time-btn"
-                                    onClick={() => addTimeSlot(showtimeIndex)}
-                                >
-                                    + Add Time
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                    <button
-                        type="button"
-                        className="add-date-btn"
-                        onClick={addShowtimeDate}
-                    >
-                        + Add Another Date
-                    </button>
-                </div>
+                {formData.status === 'upcoming' && (
+                    <div>
+                        <label>Release Date:</label>
+                        <input
+                            type="date"
+                            name="release_date"
+                            value={formData.release_date}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                )}
+                {/* ------------------------------------------------------------- */}
 
                 <button type="submit" disabled={isSubmitting}>
                     {submitText}

@@ -5,7 +5,8 @@ import "./Navbar.css";
 
 
 export default function Navbar() {
-    const {logout, isAuthenticated, isAdmin } = useAuth();
+    // FIX 1: Fetch the 'user' object instead of 'isAdmin'
+    const {logout, isAuthenticated, user } = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -37,8 +38,8 @@ export default function Navbar() {
                 {/* Conditional rendering based on auth status */}
                 {isAuthenticated ? (
                     <>
-                        {/* Show admin link only for admin users */}
-                        {isAdmin && (
+                        {/* FIX 2: Check that 'user' exists AND user.isAdmin is true */}
+                        {user && user.isAdmin && (
                             <Link to="/admin" className="nav-btn">
                                 Admin
                             </Link>

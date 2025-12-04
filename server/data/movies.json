@@ -1,133 +1,385 @@
 [
   {
-    "id": "m1764469505949",
-    "title": "Harry Potter and the Philosopher’s Stone",
-    "poster_url": "https://www.originalfilmart.com/cdn/shop/files/harry_potter_and_the_sorcerers_stone_2001_original_film_art_5000x.webp?v=1684872812",
-    "rating": "PG",
+    "id": "m1764806936263",
+    "title": "Eternity",
+    "poster_url": "https://cdn.theatertoolkit.com/media/pccmovies/features/posters/eternity-et26786-Medium.jpg",
+    "rating": "PG-13",
+    "description": "In an afterlife where souls have one week to decide where to spend eternity, Joan is faced with the impossible choice between the man she spent her life with and her first love, who died young and has waited decades for her to arrive. ",
+    "status": "streaming",
     "showtimes": [
       {
         "date": "2025-12-03",
         "times": [
-          "10:00"
+          "11:00",
+          "14:00",
+          "17:00",
+          "20:00",
+          "22:00"
+        ]
+      },
+      {
+        "date": "2025-12-04",
+        "times": [
+          "11:00",
+          "14:00",
+          "17:00",
+          "20:00",
+          "22:00"
         ]
       },
       {
         "date": "2025-12-05",
         "times": [
-          "17:00"
+          "16:00",
+          "22:00"
         ]
       },
       {
-        "date": "2025-12-07",
+        "date": "2025-12-06",
         "times": [
-          "15:00"
+          "12:00"
         ]
       }
     ],
-    "description": "Harry Potter has lived under the stairs at his aunt and uncle’s house his whole life. But on his 11th birthday, he learns he’s a powerful wizard—with a place waiting for him at the Hogwarts School of Witchcraft and Wizardry. As he learns to harness his newfound powers with the help of the school’s kindly headmaster, Harry uncovers the truth about his parents’ deaths—and about the villain who’s to blame."
+    "release_date": null
   },
   {
-    "id": "m1764623133414",
-    "title": "Star Wars: The Force Awakens",
-    "poster_url": "https://a.ltrbxd.com/resized/sm/upload/t1/n6/d1/k6/g2mqdMU3jaz6uEosF5aqJgbw7e9-0-1000-0-1500-crop.jpg?v=f105fa4be0",
-    "rating": "PG-13",
-    "showtimes": [
-      {
-        "date": "2025-12-01",
-        "times": [
-          "15:00",
-          "16:00"
-        ]
-      },
-      {
-        "date": "2025-12-02",
-        "times": [
-          "17:00"
-        ]
-      }
-    ],
-    "description": ""
-  },
-  {
-    "id": "m1764623188023",
-    "title": "The Matrix",
-    "poster_url": "https://a.ltrbxd.com/resized/film-poster/5/1/5/1/8/51518-the-matrix-0-1000-0-1500-crop.jpg?v=fc7c366afe",
-    "rating": "R",
+    "id": "m1764807143620",
+    "title": "Zootopia 2",
+    "poster_url": "https://cdn.theatertoolkit.com/media/pccmovies/features/posters/zootopia-2-3d12919-Medium.jpg",
+    "rating": "PG",
+    "description": "After cracking the biggest case in Zootopia's history, rookie cops Judy Hopps and Nick Wilde find their partnership isn't as solid as they thought when Chief Bogo orders them to join the Partners in Crisis counseling program. But it doesn't take long for their partnership to be put to the ultimate test when they find themselves on the twisting trail of a mystery tied to the arrival of a venomous snake in the animal metropolis. ",
+    "status": "streaming",
     "showtimes": [
       {
         "date": "2025-12-03",
         "times": [
+          "10:00",
+          "12:00",
+          "15:00",
+          "17:00",
+          "20:00",
+          "22:30"
+        ]
+      },
+      {
+        "date": "2025-12-04",
+        "times": [
+          "10:00",
+          "12:00",
+          "15:00",
+          "17:00",
+          "20:00",
+          "22:30"
+        ]
+      },
+      {
+        "date": "2025-12-05",
+        "times": [
+          "10:00",
+          "15:00",
+          "17:00",
+          "20:00"
+        ]
+      },
+      {
+        "date": "2025-12-06",
+        "times": [
+          "10:00",
+          "15:00",
+          "17:00",
+          "20:00"
+        ]
+      }
+    ],
+    "release_date": null
+  },
+  {
+    "id": "m1764807568916",
+    "title": "Wicked For Good",
+    "poster_url": "https://cdn.theatertoolkit.com/media/pccmovies/features/posters/wicked-for-good-3d2751-Medium.jpg",
+    "rating": "PG",
+    "description": "As an angry mob rises against the Wicked Witch, Glinda and Elphaba will need to come together one final time. With their singular friendship now the fulcrum of their futures, they will need to truly see each other, with honesty and empathy, if they are to change themselves, and all of Oz, for good. ",
+    "status": "streaming",
+    "showtimes": [
+      {
+        "date": "2025-12-03",
+        "times": [
+          "11:00",
+          "14:00",
+          "18:00",
+          "20:00"
+        ]
+      },
+      {
+        "date": "2025-12-04",
+        "times": [
+          "10:00",
+          "17:00"
+        ]
+      },
+      {
+        "date": "2025-12-05",
+        "times": [
+          "11:00",
+          "14:00",
+          "18:00",
+          "20:00"
+        ]
+      },
+      {
+        "date": "2025-12-06",
+        "times": [
+          "10:00",
+          "17:00"
+        ]
+      }
+    ],
+    "release_date": null
+  },
+  {
+    "id": "m1764807684124",
+    "title": "The Running Man",
+    "poster_url": "https://cdn.theatertoolkit.com/media/pccmovies/features/posters/the-running-man-ru4072-Medium.jpg",
+    "rating": "R",
+    "description": "\nDesperate to save his sick daughter, working-class Ben Richards is convinced by The Running Man's charming but ruthless producer to enter the deadly competition game as a last resort. But Ben's defiance, instincts, and grit turn him into an unexpected fab favorite - and a threat to the entire system. As ratings skyrocket, so does the danger, and Ben must outwit not just the Hunters, but a nation addicted to watching him fall. ",
+    "status": "streaming",
+    "showtimes": [
+      {
+        "date": "2025-12-03",
+        "times": [
+          "15:00",
+          "17:00"
+        ]
+      },
+      {
+        "date": "2025-12-04",
+        "times": [
+          "15:00",
+          "17:00"
+        ]
+      },
+      {
+        "date": "2025-12-05",
+        "times": [
+          "15:00",
+          "17:00",
+          "20:00",
+          "22:00"
+        ]
+      },
+      {
+        "date": "2025-12-06",
+        "times": [
+          "15:00",
+          "17:00",
+          "20:00",
+          "22:00"
+        ]
+      }
+    ],
+    "release_date": null
+  },
+  {
+    "id": "m1764807758356",
+    "title": "Predator: Badlands",
+    "poster_url": "https://cdn.theatertoolkit.com/media/pccmovies/features/posters/predator-badlands-pr1112-Medium.jpg",
+    "rating": "PG-13",
+    "description": "In the future on a remote planet, a young Predator, outcast from his clan, finds an unlikely ally in Thia and embarks on a treacherous journey in search of the ultimate adversary. ",
+    "status": "streaming",
+    "showtimes": [
+      {
+        "date": "2025-12-03",
+        "times": [
+          "10:00",
+          "19:00"
+        ]
+      },
+      {
+        "date": "2025-12-04",
+        "times": [
+          "10:00",
+          "19:00"
+        ]
+      },
+      {
+        "date": "2025-12-05",
+        "times": [
+          "19:00"
+        ]
+      },
+      {
+        "date": "2025-12-06",
+        "times": [
+          "19:00"
+        ]
+      }
+    ],
+    "release_date": null
+  },
+  {
+    "id": "m1764807872863",
+    "title": "Sisu: Road to Revenge",
+    "poster_url": "https://cdn.theatertoolkit.com/media/pccmovies/features/posters/sisu-road-to-revenge--si8827-Medium.jpg",
+    "rating": "R",
+    "description": "Returning to the house where his family was brutally murdered during the war, 'the man who refuses to die' dismantles it, loads it on a truck, and is determined to rebuild it somewhere safe in their honor. When the Red Army commander who killed his family comes back hellbent on finishing the job, a relentless, eye-popping cross-country chase ensues — a fight to the death. ",
+    "status": "streaming",
+    "showtimes": [
+      {
+        "date": "2025-12-05",
+        "times": [
+          "20:00"
+        ]
+      },
+      {
+        "date": "2025-12-06",
+        "times": [
+          "18:00",
+          "21:00"
+        ]
+      }
+    ],
+    "release_date": null
+  },
+  {
+    "id": "m1764807969426",
+    "title": "Now You See Me, Now You Don't",
+    "poster_url": "https://cdn.theatertoolkit.com/media/pccmovies/features/posters/now-you-see-me-now-you-don-t-no31800-Medium.jpg",
+    "rating": "PG",
+    "description": "The Four Horsemen return along with a new generation of illusionists performing mind-melding twists, turns, surprises, and magic unlike anything ever captured on film. ",
+    "status": "streaming",
+    "showtimes": [
+      {
+        "date": "2025-12-03",
+        "times": [
+          "09:00",
+          "15:00",
           "18:00"
         ]
       },
       {
         "date": "2025-12-04",
         "times": [
-          "19:00"
-        ]
-      },
-      {
-        "date": "2025-12-06",
-        "times": [
-          "12:00",
-          "20:00"
-        ]
-      }
-    ],
-    "description": "Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth."
-  },
-  {
-    "id": "m1764698765301",
-    "title": "Fight Club",
-    "poster_url": "https://a.ltrbxd.com/resized/film-poster/5/1/5/6/8/51568-fight-club-0-1000-0-1500-crop.jpg?v=768b32dfa4",
-    "rating": "R",
-    "description": "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground “fight clubs” forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.",
-    "showtimes": [
-      {
-        "date": "2025-12-04",
-        "times": [
-          "17:00",
-          "20:00"
-        ]
-      },
-      {
-        "date": "2025-12-06",
-        "times": [
-          "13:00",
           "16:00",
-          "19:00"
-        ]
-      },
-      {
-        "date": "2025-12-08",
-        "times": [
-          "17:00",
-          "20:00"
-        ]
-      }
-    ]
-  },
-  {
-    "id": "m1764790272023",
-    "title": "Midsommar",
-    "poster_url": "https://a.ltrbxd.com/resized/film-poster/4/5/9/5/6/4/459564-midsommar-0-1000-0-1500-crop.jpg?v=ed7b8ded1f",
-    "rating": "R",
-    "description": "\n\nSeveral friends travel to Sweden to study as anthropologists a summer festival that is held every ninety years in the remote hometown of one of them. What begins as a dream vacation in a place where the sun never sets, gradually turns into a dark nightmare as the mysterious inhabitants invite them to participate in their disturbing festive activities.",
-    "showtimes": [
-      {
-        "date": "2025-12-03",
-        "times": [
           "19:00"
         ]
       },
       {
         "date": "2025-12-05",
         "times": [
-          "19:00",
-          "21:00",
-          "23:00"
+          "10:00",
+          "15:00",
+          "18:00",
+          "21:00"
+        ]
+      },
+      {
+        "date": "2025-12-06",
+        "times": [
+          "10:00",
+          "15:00",
+          "18:00",
+          "21:00"
         ]
       }
-    ]
+    ],
+    "release_date": null
+  },
+  {
+    "id": "m1764808043856",
+    "title": "Regretting You",
+    "poster_url": "https://cdn.theatertoolkit.com/media/pccmovies/features/posters/-re31086-Medium.jpg",
+    "rating": "PG-13",
+    "description": "Morgan Grant and her daughter Clara explore what's left behind after a devastating accident reveals a shocking betrayal and forces them to confront family secrets, redefine love, and rediscover each other. ",
+    "status": "streaming",
+    "showtimes": [
+      {
+        "date": "2025-12-03",
+        "times": [
+          "14:00",
+          "20:00"
+        ]
+      },
+      {
+        "date": "2025-12-04",
+        "times": [
+          "10:00",
+          "16:00"
+        ]
+      },
+      {
+        "date": "2025-12-05",
+        "times": [
+          "16:00"
+        ]
+      },
+      {
+        "date": "2025-12-06",
+        "times": [
+          "21:00"
+        ]
+      }
+    ],
+    "release_date": null
+  },
+  {
+    "id": "m1764808208207",
+    "title": "David",
+    "poster_url": "https://cdn.theatertoolkit.com/media/pccmovies/features/posters/david-da32717-Medium.jpg",
+    "rating": "PG",
+    "description": "In a kingdom torn by fear and corruption, a shepherd boy is called to stand against a giant and the darkness behind him. With nothing but faith, courage, and a sling, he defies an empire and awakens the heart of a nation. From the quiet hills of Bethlehem to the roar of the battlefield, his journey will shape kings, test hearts, and reveal that the greatest strength is found in trust, not power. ",
+    "status": "upcoming",
+    "showtimes": [],
+    "release_date": "2025-12-19"
+  },
+  {
+    "id": "m1764808278294",
+    "title": "Avatar: Fire and Ash",
+    "poster_url": "https://cdn.theatertoolkit.com/media/pccmovies/features/posters/avatar-fire-and-ash-3d27419-Medium.jpg",
+    "rating": "PG-13",
+    "description": "In the wake of the devastating war against the RDA and the loss of their eldest son, Jake Sully and Neytiri face a new threat on Pandora: the Ash People, a violent and power-hungry Na'vi tribe led by the ruthless Varang. Jake's family must fight for their survival and the future of Pandora in a conflict that pushes them to their emotional and physical limits. ",
+    "status": "upcoming",
+    "showtimes": [],
+    "release_date": "2025-12-19"
+  },
+  {
+    "id": "m1764808339618",
+    "title": "The Spongebob Movie: Search for Squarepants",
+    "poster_url": "https://cdn.theatertoolkit.com/media/pccmovies/features/posters/the-spongebob-movie-search-for-squarepants-sp9200-Medium.jpg",
+    "rating": "PG",
+    "description": "SpongeBob travels to the depths of the ocean and faces off against the ghost of the Flying Dutchman. ",
+    "status": "upcoming",
+    "showtimes": [],
+    "release_date": "2025-12-19"
+  },
+  {
+    "id": "m1764808412415",
+    "title": "The Housemaid",
+    "poster_url": "https://cdn.theatertoolkit.com/media/pccmovies/features/posters/the-housemaid-ho422-Medium.jpg",
+    "rating": "R",
+    "description": "A woman with a troubled past accepts a job as a live-in maid for a wealthy, seemingly perfect family. ",
+    "status": "upcoming",
+    "showtimes": [],
+    "release_date": "2025-12-19"
+  },
+  {
+    "id": "m1764808449906",
+    "title": "Anaconda",
+    "poster_url": "https://cdn.theatertoolkit.com/media/pccmovies/features/posters/anaconda-an10844-Medium.jpg",
+    "rating": "PG-13",
+    "description": "\nA group of friends facing mid-life crises head to the rainforest with the intention of remaking their favorite movie from their youth, only to find themselves in a fight for their lives against natural disasters, giant snakes and violent criminals. ",
+    "status": "upcoming",
+    "showtimes": [],
+    "release_date": "2025-12-25"
+  },
+  {
+    "id": "m1764808534050",
+    "title": "Stranger Things 5: The Finale",
+    "poster_url": "https://cdn.theatertoolkit.com/media/pccmovies/features/posters/stranger-things-5-the-finale-st4750-Medium.jpg",
+    "rating": "PG-13",
+    "description": "\nThe fall of 1987. Hawkins is scarred by the opening of the Rifts, and our heroes are united by a single goal: find and kill Vecna. But he has vanished — his whereabouts and plans unknown. Complicating their mission, the government has placed the town under military quarantine and intensified its hunt for Eleven, forcing her back into hiding. As the anniversary of Will’s disappearance approaches, so does a heavy, familiar dread. The final battle is looming - and with it, a darkness more powerful and more deadly than anything they’ve faced before. To end this nightmare, they’ll need everyone - the full party - standing together, one last time. ",
+    "status": "upcoming",
+    "showtimes": [],
+    "release_date": "2025-12-31"
   }
 ]
